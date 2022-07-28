@@ -1,0 +1,43 @@
+global:
+    checkNewVersion: false
+    sendAnonymousUsage: false
+
+pilot:
+  token: "797465d7-8c3f-4561-b181-6d2cb59b5341"
+
+experimental:
+  plugins:
+    real-ip:
+      moduleName: github.com/Paxxs/traefik-get-real-ip
+      version: v1.0.0
+  localPlugins:
+    example:
+      moduleName: github.com/Paxxs/traefik-get-real-ip
+# devPlugin:
+#   goPath: /project
+#   moduleName: github.com/paxxs/traefik-get-real-ip
+
+providers:
+  docker:
+    network: frontend # This option can be overridden on a container basis with the traefik.docker.network label.
+    watch: true
+    exposedByDefault: false
+  file:
+    # filename: /traefik.yaml
+    directory: /etc/traefik/config
+    watch: true
+
+entryPoints:
+  http:
+    address: ":8000"
+    forwardedHeaders:
+      insecure: true
+
+api:
+  insecure: true # only for devs, prodution env use basic auth
+  dashboard: true # Default
+  # debug: true # Enable additional endpoints for debugging and profiling. (Default: false)
+log:
+  # only for devs
+  level: DEBUG # only for devs
+

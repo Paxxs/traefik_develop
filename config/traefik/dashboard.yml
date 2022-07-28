@@ -1,0 +1,8 @@
+http:
+  routers:
+    dashboard:
+      # rule: Host(`local.morfans.cn`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      rule: PathPrefix(`/api`) || PathPrefix(`/dashboard`)
+      entryPoints:
+        - http
+      service: api@internal

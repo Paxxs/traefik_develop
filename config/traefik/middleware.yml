@@ -1,0 +1,41 @@
+http:
+  routers:
+    my-router:
+      rule: Path(`/whoami`)
+      service: my-whoami@docker
+      entryPoints:
+        - http
+      middlewares:
+        - my-dev-plugin
+
+  middlewares:
+    my-plugin:
+      plugin:
+        real-ip:
+          Proxy:
+            - proxyHeadername: X-From-Cdn
+              proxyHeadervalue: 1
+              realIP: X-Forwarded-For
+            - proxyHeadername: X-From-Cdn
+              proxyHeadervalue: 2
+              realIP: Client-Ip
+            - proxyHeadername: X-From-Cdn
+              proxyHeadervalue: 3
+              realIP: Cf-Connecting-Ip
+            - proxyHeadername: "*"
+              realIP: RemoteAddr
+    my-dev-plugin:
+      plugin:
+        example:
+          Proxy:
+            - proxyHeadername: X-From-Cdn
+              proxyHeadervalue: 1
+              realIP: X-Forwarded-For
+            - proxyHeadername: X-From-Cdn
+              proxyHeadervalue: 2
+              realIP: Client-Ip
+            - proxyHeadername: X-From-Cdn
+              proxyHeadervalue: 3
+              realIP: Cf-Connecting-Ip
+            - proxyHeadername: "*"
+              realIP: RemoteAddr
